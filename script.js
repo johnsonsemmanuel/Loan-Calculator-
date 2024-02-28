@@ -1,11 +1,13 @@
-function CalculateLoan() {
+function calculateLoan() {
   const loanAmount = parseFloat(
     document.getElementById("loanAmountInput").value
   );
   const annualInterestRate = parseFloat(
     document.getElementById("interestRateInput").value
   );
-  const loanTermYears = parseFloat(document.getElementById("loanTermInput"));
+  const loanTermYears = parseFloat(
+    document.getElementById("loanTermInput").value
+  );
 
   if (isNaN(loanAmount) || isNaN(annualInterestRate) || isNaN(loanTermYears)) {
     alert("Please enter valid values for the fields");
@@ -13,20 +15,30 @@ function CalculateLoan() {
   }
 
   const monthlyInterestRate = annualInterestRate / 100 / 12;
-  const numberofpayments = loanTermYears;
+  const numberofPayments = loanTermYears;
   const monthlyPayment =
-    (loanAmount + monthlyInterestRate) /
-    (1 - Math.pow(1 + monthlyInterestRate, -numberofpayments));
-  const totalInterest = monthlyPayment * numberofpayments - loanAmount;
+    (loanAmount * monthlyInterestRate) /
+    (1 - Math.pow(1 + monthlyInterestRate, -numberofPayments));
+  const totalInterest = monthlyPayment * numberofPayments - loanAmount;
+  const totalPayment = monthlyPayment * numberofPayments;
 
   displayResult(monthlyPayment, totalInterest, totalPayment);
 }
 
-// function display(monthlyPayment, totalInterest, totalPayment) {
-//   const resultDiv = document.getElementById("result");
+function displayResult(monthlyPayment, totalInterest, totalPayment) {
+  const resultDiv = document.getElementById("result");
 
-//   resultDiv.innerHTML = `   <p>
-//   <strong>
-//   Monthly Payment: ${MonthlyPayment.toFixed(2)}</strong>
-//   </p>`;
-// }
+  resultDiv.innerHTML = `     <p>
+  <strong>Monthly Payment: ${monthlyPayment.toFixed(2)}</strong>
+</p>
+<p>
+  <strong>Total Interest: ${totalInterest.toFixed(2)} </strong>
+</p>
+<p>
+  <strong>Total Payment: ${totalPayment.toFixed(2)}</strong>
+</p>`;
+}
+
+document
+  .getElementById("calculateBtn")
+  .addEventListener("click", calculateLoan);
